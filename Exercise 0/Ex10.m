@@ -1,0 +1,11 @@
+n = 5;
+m = 7;
+A = rand(5, 7);
+A = round(100*A)
+max = 89;
+min = 7;
+[row_min] = find( A < min);
+[row_max] = find( A > max);
+new_A = A;
+new_A(row_min) = min;
+new_A(row_max) = max

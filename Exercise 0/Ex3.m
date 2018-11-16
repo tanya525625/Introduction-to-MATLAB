@@ -1,0 +1,11 @@
+n = 7;
+A = eye(n);
+x = diag(A);
+A = -2*A;
+B = diag(x, 1);
+B = B(1:n, 1:n);
+C = rot90(B, -2);
+D = A + B + C;
+D(1, n) = 1
+D(n, 1) = 1
+Rank = rank(D)
