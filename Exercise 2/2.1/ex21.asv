@@ -11,7 +11,7 @@ for k=0:N
 end
 hold on; 
 plot(vi, newY1, 'm');
-err1 = max(abs(S.b1f-(coeff1(1)*(S.V)+coeff1(2)))./abs(S.b1f))*100
+err1 = max(abs(appFunc(S.V, coeff1))./abs(S.b1f))*100
 
 plot(S.V, S.b2f, '*g');
 N = 2; 
@@ -22,21 +22,35 @@ for k=0:N
 end
 hold on; 
 plot(vi, newY2, 'c');
-err2 = max(abs(S.b2f-(coeff2(1)*(S.V).^2+coeff2(2)*(S.V)+coeff2(3)))./abs(S.b2f))*100
+err2 = max(abs(S.b2f-appFunc(S.V, coeff2))./abs(S.b2f))*100
 
-plot(S.V, S.b2f, '*g');
-N = 2; 
-[]
-coeff = zeros(1, size(S.V));
-for i=0:size(S.V)
-    coeff = S.b2f(i)/S.V(i);
+k = length(vi); 
+C = 0; 
+yLn = log(S.b2f); 
+xLn = log(S.V); 
+N = 1;
+coef = polyfit(xLn, yLn, N); 
+alpha = coef(1); 
+b = coef(2); 
+y = zeros(1, k); 
+for i = 1:k 
+    y(i) = appFuncExp(vi(i), coef); 
+end 
+plot(vi, y, 'y'); 
+legend("Original", "New"); 
+
+
+
+function [ret] = appFuncExp(x, coef) 
+    ret = exp(coef(2))*x.^(coef(1)); 
 end
-newY3 = 0;
-newY3 = newY3 + coeff*vi^2;
 
-hold on; 
-plot(vi, newY3, 'c');
-err3 = max(abs(S.b2f-(coeff*(S.V).^2))./abs(S.b2f))*100
-
+function [ret] = appFunc(x, coef) 
+    L = length(coef); 
+    ret = 0; 
+    for i = 1:L 
+        ret = ret + (x.^(L-i))*coef(i); 
+    end 
+end
 
 
