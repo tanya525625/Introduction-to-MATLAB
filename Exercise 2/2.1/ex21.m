@@ -21,7 +21,7 @@ for k=0:N
     newY2 = newY2 + coeff2(N-k+1) * vi.^k;
 end
 hold on; 
-plot(vi, newY2, 'c', 'Linewidth', 2);
+plot(vi, newY2, 'y', 'Linewidth', 3);
 err2 = max(abs(S.b2f-appFunc(S.V, coeff2))./abs(S.b2f))*100
 
 k = length(vi); 
@@ -36,7 +36,7 @@ y = zeros(1, k);
 for i = 1:k 
     y(i) = appFuncExp(vi(i), coeff3); 
 end 
-plot(vi, y, 'y'); 
+plot(vi, y, 'b'); 
 legend("Original b1f", "Lin b1f", "Original b2f", "Sqr b2f", "Power b2f"); 
 
 err3 = max(abs(S.b2f-appFuncExp(S.V, coeff3))./abs(S.b2f))*100
