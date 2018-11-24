@@ -1,30 +1,37 @@
 n = input('Введите количество узлов интерполирования ')
 a = -1;
 b = 1;
+nn = 1000;
+
 x = linspace(a, b, n);
-xx = chebyshevNodes(x, a, b);
-y = zeros(1, n);
-yy = zeros(1, n);
-% y = 1/(1+12*x.*x)
-for i = 1:n
-    y(i) = 1/(1+12*x(i)*x(i));
-    yy(i) = 1/(1+12*xx(i)*xx(i));
-end
-yL=lagrange(x,y);
-yLCh=lagrange(xx,yy);
-yS = slae(x, y);
+y = func(x);
+xx = linspace(a, b, nn);
+yy = func(xx);
+
+xCh = chebyshevNodes(x, a, b);
+yCh = func(xCh);
+
+yL=lagrange(x,y, xx);
+yLCh=lagrange(xCh,yCh, xx);
+
+yS = slae(x, y, xx);
+
+figure('Color','w');
+ezplot ('1/(1+12*x*x)', [a b])
+grid on
+hold on
+plot(xx,yL,'r', 'Linewidth', 2)
+plot(xx,yLCh,'g')
+plot(xx, yS, 'y')
+legend('1/(1+12x^2)','Интерполяция полиномом Лагранжа', 'Интерполяция через узлы Чебышёва', 'Интерполяция через СЛАУ')
+
 figure('Color','w');
 grid on
 hold on
-ezplot ('1/(1+12*x*x)', [-1 1])
-plot(x,yL,'r', 'Linewidth', 2)
-plot(xx,yLCh,'g')
-plot(x, yS, 'y')
-legend('1/(1+12x^2)','Интерполяция полиномом Лагранжа', 'Интерполяция через узлы Чебышёва', 'Интерполяция через СЛАУ')
-f = @lagrange;
-errL = err(x, a, b, f)
-f = @slae
-errSLAE = err(x, a, b, f)
-errCh = errDif(y, yLCh)
+plot(xx, yL - yy, 'c', 'linewidth', 2)
+plot(xx, yLCh - yy, 'm')
+plot(xx, yS - yy, 'y')
+legend('Lagr','LagrCheb','SLAE');
+
 
 
