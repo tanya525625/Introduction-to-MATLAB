@@ -1,11 +1,21 @@
 [FileName,PathName,FilterIndex] = uigetfile({'*.mat','MAT-files (*.mat)'});
 S = load([PathName,FileName]);
-grid on
-plot(S.tt, S.xx, '*r');
-ti = min(S.tt):0.1:max(S.tt);
-N = 2; 
-coeff1 = polyfit(S.tt, S.xx, N);
-newY1 = 0;
+c0 = [0,0, 0, 0];
+c = fsolve(@myFun,c0);
+step = 0.01; 
+nodes = min(S.tt):step:max(S.tt); 
+newXX = zeros(1, length(nodes)); 
+newYY = zeros(1, length(nodes));
+
+for i=1:length(nodes) 
+    newXX(i) = x(nodes(i), c); 
+end 
+
+for i=1:length(nodes) 
+    newYY(i) = y(nodes(i), c); 
+end 
+
+plot(newXX, newYY, 'm');
 
 
 
@@ -24,13 +34,3 @@ newY1 = 0;
 
 
 
-
-
-
-
-
-for k=0:N
-    newY1 = newY1 + coeff1(N-k+1) * ti.^k;
-end
-hold on; 
-plot(ti, newY1, 'c');

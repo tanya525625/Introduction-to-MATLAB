@@ -11,7 +11,7 @@ for k=0:N
 end
 hold on; 
 plot(vi, newY1, 'm');
-err1 = max(abs(appFunc(S.V, coeff1))./abs(S.b1f))*100
+err1 = max(abs(appFunc(S.V, coeff1))./abs(S.b1f))
 
 plot(S.V, S.b2f, '*g');
 N = 2; 
